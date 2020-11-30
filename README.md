@@ -1,4 +1,4 @@
-Handler
+[Handler]
   - Handler의 종류
   
     1. interrupt handler : 인터럽트 접수에 대응하여 특정 기능을 처리하는 기계어 코드 루틴
@@ -12,7 +12,7 @@ Handler
     
     *val handler = Handler()는 디프리케이티드되어서 val handler = Handler(Looper.getMainLooper())를 사용한다
 
-ListView
+[ListView]
   * android.support deprecated 되어서 Refator Migrate to AndroidX 해주었음
   
   리스트뷰를 사용하기 위해 필요한 것
@@ -22,8 +22,12 @@ ListView
   4. Adapter 생성
   5. Adapter 설정
   
-Fragment
+[Fragment]
 
   supportFragmentManager.beginTransaction()
                 .replace(R.id.view, OneFragment())
                 .commit()
+                
+[RecyclerView]
+  리스트뷰와 비슷하지만 ListView의 문제를 해결하기 위해 여러 형태로 커스텀할 수 있도록 제공된 툴
+  
