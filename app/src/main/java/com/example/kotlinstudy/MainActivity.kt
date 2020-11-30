@@ -1,89 +1,38 @@
 package com.example.kotlinstudy
 
-import android.annotation.SuppressLint
-import android.view.View
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
-import androidx.viewpager.widget.ViewPager
-import com.google.android.material.tabs.TabLayout
+import android.os.Bundle
+import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : BaseActivity() {
+class MainActivity : AppCompatActivity() {
 
-    override var viewId: Int = R.layout.activity_main
-    override var toolbarId: Int? = R.id.toolbar
-    private lateinit var toast: Toast
-    private var backKeyPressedTime: Long = 200
-    private var mViewPager: ViewPager? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-    @SuppressLint("ShowToast")
-    override fun onCreate() {
-        showActionBar()
+        //임시로 사용할 데이터 실제로는 서버통신을 통해 db나 json에서 가져옵니다. 이름들은 걍 떠오르는 이름 아무거나 썼어요
+        val userList = arrayListOf(
+            Users("심효근", "shimhg02@naver.com", "ㅎㅇ"),
+            Users("홍석진", "shimhg02@naver.com", "ㄷ"),
+            Users("박채연", "shimhg02@naver.com", "ㅁㄴㄴㄴㄴㅇㄹ"),
+            Users("한규언", "shimhg02@naver.com", "ㅁㄴㄹㅇㅇㅇㄹ"),
+            Users("이소명", "shimhg02@naver.com", "ㅇ"),
+            Users("박태욱", "shimhg02@naver.com", "코틀린최고"),
+            Users("박서연", "shimhg02@naver.com", "ㅁㄴㅇㄹㅁㄴㅇㄹ"),
+            Users("김민식", "shimhg02@naver.com", "ㄷ"),
+            Users("김태양", "shimhg02@naver.com", "할말없다"),
+            Users("최성희", "shimhg02@naver.com", "나는 킹갓이다")
+        )
 
+        //레이아웃매니저를 설정해줍니다.
+        recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        recyclerView.setHasFixedSize(true)
 
-        mViewPager = findViewById(R.id.viewPager)
-        mViewPager!!.adapter = PagerAdapter(supportFragmentManager)
-        mViewPager!!.currentItem = 0
+        //어댑터도 설정해줍니다.
+        recyclerView.adapter = RecyclerAdapter(userList)
 
-        val tabLayout = findViewById<View>(R.id.tabs) as TabLayout
-        tabLayout.setupWithViewPager(mViewPager)
-
-
-        tabLayout.getTabAt(0)!!.text = "1"
-        tabLayout.getTabAt(1)!!.text = "2"
-        tabLayout.getTabAt(2)!!.text = "3"
-        tabLayout.getTabAt(3)!!.text = "4"
-
-        mViewPager!!.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) = tab.select()
-
-            override fun onTabUnselected(tab: TabLayout.Tab) {
-
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab) {
-
-            }
-        })
-
-    }
-
-    override fun onBackPressed() {
-
-        if (System.currentTimeMillis() > backKeyPressedTime + 500) {
-            backKeyPressedTime = System.currentTimeMillis()
-            toast.show()
-            return
-        }
-
-        if (System.currentTimeMillis() <= backKeyPressedTime + 500) {
-            toast.cancel()
-            this.finish()
-        }
-    }
-
-    inner class PagerAdapter(supportFragmentManager: FragmentManager) : FragmentStatePagerAdapter(supportFragmentManager,
-        BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-
-        override fun getItem(position: Int): Fragment {
-
-            return when (position) {
-                0 ->
-                    TestFragment()
-                1 ->
-                    TestFragment()
-                2 ->
-                    TestFragment()
-                3 ->
-                    TestFragment()
-                else ->
-                    TestFragment()
-            }
-            throw IllegalStateException("position $position is invalid for this viewpager")
-        }
-
-        override fun getCount(): Int = 4
     }
 }
